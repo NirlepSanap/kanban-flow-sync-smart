@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSocket } from '../contexts/SocketContext';
@@ -45,7 +44,7 @@ const KanbanBoard = () => {
   const { user, logout } = useAuth();
   const { socket, connected } = useSocket();
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     fetchTasks();

@@ -13,7 +13,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
 
-  const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:5000';
+  const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const newSocket = io(SOCKET_URL);
