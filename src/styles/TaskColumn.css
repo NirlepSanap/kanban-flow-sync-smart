@@ -1,0 +1,139 @@
+
+.task-column {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  max-height: 70vh;
+  transition: all 0.2s ease;
+}
+
+.task-column:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.column-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  border-top: 4px solid #3182ce;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.column-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+}
+
+.task-count {
+  background-color: #edf2f7;
+  color: #4a5568;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 24px;
+  text-align: center;
+}
+
+.column-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+.empty-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #a0aec0;
+  background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+  border-radius: 8px;
+  border: 2px dashed #e2e8f0;
+  margin-top: 20px;
+}
+
+.empty-column p {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.empty-column small {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Drag and Drop States */
+.task-column.drag-over {
+  background-color: #f0fff4;
+  border: 2px dashed #48bb78;
+}
+
+.task-column.drag-over .column-header {
+  background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .task-column {
+    min-height: 300px;
+    max-height: none;
+  }
+
+  .column-header {
+    padding: 16px 20px;
+  }
+
+  .column-header h3 {
+    font-size: 16px;
+  }
+
+  .column-content {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .empty-column {
+    padding: 30px 16px;
+  }
+
+  .empty-column p {
+    font-size: 14px;
+  }
+
+  .empty-column small {
+    font-size: 11px;
+  }
+}
