@@ -1,5 +1,5 @@
+
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
 import { useSocket } from '../contexts/SocketContext';
 import TaskColumn from './TaskColumn';
 import TaskModal from './TaskModal';
@@ -13,17 +13,6 @@ interface Task {
   description: string;
   status: 'todo' | 'inprogress' | 'done';
   priority: 'low' | 'medium' | 'high';
-  assignedUser?: {
-    _id: string;
-    username: string;
-    email: string;
-    avatar: string;
-  };
-  createdBy: {
-    _id: string;
-    username: string;
-    email: string;
-  };
   lastModified: string;
   createdAt: string;
 }
@@ -41,7 +30,6 @@ const KanbanBoard = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [showActivityPanel, setShowActivityPanel] = useState(false);
   const [conflictData, setConflictData] = useState<ConflictData | null>(null);
-  const { user, logout } = useAuth();
   const { socket, connected } = useSocket();
 
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -76,11 +64,7 @@ const KanbanBoard = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`${API_BASE}/tasks`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await fetch(`${API_BASE}/tasks`);
 
       if (response.ok) {
         const data = await response.json();
@@ -98,8 +82,7 @@ const KanbanBoard = () => {
       const response = await fetch(`${API_BASE}/tasks`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(taskData)
       });
@@ -123,8 +106,7 @@ const KanbanBoard = () => {
       const response = await fetch(`${API_BASE}/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...updates,
@@ -155,34 +137,10 @@ const KanbanBoard = () => {
     }
   };
 
-  const handleSmartAssign = async (taskId: string) => {
-    try {
-      const response = await fetch(`${API_BASE}/tasks/${taskId}/smart-assign`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (response.ok) {
-        const updatedTask = await response.json();
-        setTasks(prev => prev.map(task => 
-          task._id === taskId ? updatedTask : task
-        ));
-        socket?.emit('task_updated', updatedTask);
-      }
-    } catch (error) {
-      console.error('Error smart assigning task:', error);
-    }
-  };
-
   const handleDeleteTask = async (taskId: string) => {
     try {
       const response = await fetch(`${API_BASE}/tasks/${taskId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        method: 'DELETE'
       });
 
       if (response.ok) {
@@ -201,8 +159,7 @@ const KanbanBoard = () => {
       const response = await fetch(`${API_BASE}/tasks/${conflictData.taskId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           ...resolvedTask,
@@ -260,10 +217,6 @@ const KanbanBoard = () => {
           >
             + New Task
           </button>
-          <div className="user-menu">
-            <span>Welcome, {user?.username}</span>
-            <button onClick={logout} className="logout-btn">Logout</button>
-          </div>
         </div>
       </header>
 
@@ -275,7 +228,6 @@ const KanbanBoard = () => {
           onTaskUpdate={handleUpdateTask}
           onTaskEdit={setEditingTask}
           onTaskDelete={handleDeleteTask}
-          onSmartAssign={handleSmartAssign}
         />
         <TaskColumn
           title="In Progress"
@@ -284,7 +236,6 @@ const KanbanBoard = () => {
           onTaskUpdate={handleUpdateTask}
           onTaskEdit={setEditingTask}
           onTaskDelete={handleDeleteTask}
-          onSmartAssign={handleSmartAssign}
         />
         <TaskColumn
           title="Done"
@@ -293,7 +244,6 @@ const KanbanBoard = () => {
           onTaskUpdate={handleUpdateTask}
           onTaskEdit={setEditingTask}
           onTaskDelete={handleDeleteTask}
-          onSmartAssign={handleSmartAssign}
         />
       </div>
 

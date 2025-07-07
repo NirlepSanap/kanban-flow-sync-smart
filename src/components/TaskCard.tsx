@@ -8,17 +8,6 @@ interface Task {
   description: string;
   status: 'todo' | 'inprogress' | 'done';
   priority: 'low' | 'medium' | 'high';
-  assignedUser?: {
-    _id: string;
-    username: string;
-    email: string;
-    avatar: string;
-  };
-  createdBy: {
-    _id: string;
-    username: string;
-    email: string;
-  };
   lastModified: string;
   createdAt: string;
 }
@@ -27,14 +16,12 @@ interface TaskCardProps {
   task: Task;
   onEdit: () => void;
   onDelete: () => void;
-  onSmartAssign: () => void;
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({
   task,
   onEdit,
-  onDelete,
-  onSmartAssign
+  onDelete
 }) => {
   const [showActions, setShowActions] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -50,10 +37,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
       case 'low': return '#2ecc71';
       default: return '#95a5a6';
     }
-  };
-
-  const getAssignedUserInitials = (username: string) => {
-    return username.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
   const handleCardClick = () => {
@@ -85,34 +68,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
           )}
 
           <div className="task-footer">
-            <div className="task-meta">
-              {task.assignedUser ? (
-                <div className="assigned-user" title={task.assignedUser.username}>
-                  <div className="user-avatar">
-                    {task.assignedUser.avatar ? (
-                      <img src={task.assignedUser.avatar} alt={task.assignedUser.username} />
-                    ) : (
-                      <span>{getAssignedUserInitials(task.assignedUser.username)}</span>
-                    )}
-                  </div>
-                  <span className="username">{task.assignedUser.username}</span>
-                </div>
-              ) : (
-                <span className="unassigned">Unassigned</span>
-              )}
-            </div>
-
             <div className={`task-actions ${showActions ? 'visible' : ''}`}>
-              <button
-                className="action-btn smart-assign"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSmartAssign();
-                }}
-                title="Smart Assign"
-              >
-                🎯
-              </button>
               <button
                 className="action-btn edit"
                 onClick={(e) => {
@@ -140,7 +96,6 @@ const TaskCard: React.FC<TaskCardProps> = ({
         <div className="card-back">
           <div className="task-details">
             <h4>Task Details</h4>
-            <p><strong>Created by:</strong> {task.createdBy.username}</p>
             <p><strong>Created:</strong> {new Date(task.createdAt).toLocaleDateString()}</p>
             <p><strong>Last modified:</strong> {new Date(task.lastModified).toLocaleString()}</p>
             <p><strong>Priority:</strong> {task.priority}</p>

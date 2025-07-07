@@ -6,11 +6,6 @@ import '../styles/ActivityPanel.css';
 interface ActivityLog {
   _id: string;
   actionType: string;
-  user: {
-    _id: string;
-    username: string;
-    avatar: string;
-  };
   taskId: {
     _id: string;
     title: string;
@@ -28,7 +23,7 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
   const [loading, setLoading] = useState(true);
   const { socket } = useSocket();
 
-  const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     fetchActivityLogs();
@@ -48,11 +43,7 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
 
   const fetchActivityLogs = async () => {
     try {
-      const response = await fetch(`${API_BASE}/logs`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      const response = await fetch(`${API_BASE}/logs`);
 
       if (response.ok) {
         const data = await response.json();
@@ -70,7 +61,6 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
       case 'create': return '➕';
       case 'update': return '✏️';
       case 'delete': return '🗑️';
-      case 'assign': return '👤';
       case 'move': return '↔️';
       case 'conflict_resolved': return '⚠️';
       default: return '📝';
@@ -82,7 +72,6 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
       case 'create': return '#2ecc71';
       case 'update': return '#3498db';
       case 'delete': return '#e74c3c';
-      case 'assign': return '#9b59b6';
       case 'move': return '#f39c12';
       case 'conflict_resolved': return '#e67e22';
       default: return '#95a5a6';
@@ -120,7 +109,7 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
         ) : logs.length === 0 ? (
           <div className="empty-logs">
             <p>No activity yet</p>
-            <small>Team actions will appear here</small>
+            <small>Task actions will appear here</small>
           </div>
         ) : (
           <div className="activity-list">
@@ -135,7 +124,6 @@ const ActivityPanel: React.FC<ActivityPanelProps> = ({ onClose }) => {
                 
                 <div className="activity-content">
                   <div className="activity-main">
-                    <strong>{log.user.username}</strong>
                     <span className="activity-details">{log.details}</span>
                   </div>
                   <div className="activity-meta">
