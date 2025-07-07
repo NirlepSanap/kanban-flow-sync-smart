@@ -8,17 +8,6 @@ interface Task {
   description: string;
   status: 'todo' | 'inprogress' | 'done';
   priority: 'low' | 'medium' | 'high';
-  assignedUser?: {
-    _id: string;
-    username: string;
-    email: string;
-    avatar: string;
-  };
-  createdBy: {
-    _id: string;
-    username: string;
-    email: string;
-  };
   lastModified: string;
   createdAt: string;
 }

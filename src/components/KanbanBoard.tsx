@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../contexts/SocketContext';
 import TaskColumn from './TaskColumn';

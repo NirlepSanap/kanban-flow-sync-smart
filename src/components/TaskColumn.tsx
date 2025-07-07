@@ -9,17 +9,6 @@ interface Task {
   description: string;
   status: 'todo' | 'inprogress' | 'done';
   priority: 'low' | 'medium' | 'high';
-  assignedUser?: {
-    _id: string;
-    username: string;
-    email: string;
-    avatar: string;
-  };
-  createdBy: {
-    _id: string;
-    username: string;
-    email: string;
-  };
   lastModified: string;
   createdAt: string;
 }
@@ -31,7 +20,6 @@ interface TaskColumnProps {
   onTaskUpdate: (taskId: string, updates: Partial<Task>) => void;
   onTaskEdit: (task: Task) => void;
   onTaskDelete: (taskId: string) => void;
-  onSmartAssign: (taskId: string) => void;
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
@@ -40,8 +28,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
   status,
   onTaskUpdate,
   onTaskEdit,
-  onTaskDelete,
-  onSmartAssign
+  onTaskDelete
 }) => {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -84,7 +71,6 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
             task={task}
             onEdit={() => onTaskEdit(task)}
             onDelete={() => onTaskDelete(task._id)}
-            onSmartAssign={() => onSmartAssign(task._id)}
           />
         ))}
         
