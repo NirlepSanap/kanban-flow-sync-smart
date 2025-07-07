@@ -13,11 +13,6 @@ const taskSchema = new mongoose.Schema({
     trim: true,
     maxlength: 500
   },
-  assignedUser: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    default: null
-  },
   status: {
     type: String,
     enum: ['todo', 'inprogress', 'done'],
@@ -31,11 +26,6 @@ const taskSchema = new mongoose.Schema({
   lastModified: {
     type: Date,
     default: Date.now
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
   },
   order: {
     type: Number,

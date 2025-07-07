@@ -7,11 +7,6 @@ const actionLogSchema = new mongoose.Schema({
     required: true,
     enum: ['create', 'update', 'delete', 'assign', 'move', 'conflict_resolved']
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   taskId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Task',
