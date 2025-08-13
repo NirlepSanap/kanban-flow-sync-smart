@@ -92,8 +92,6 @@ All changes are instantly synchronized across all connected clients using Socket
 ### Activity Logging
 Every action (create, update, delete, assign) is logged and displayed in the live activity feed with timestamps and user information.
 
-## 🚀 Deployment
-
 ### Backend (Render/Railway/Cyclic)
 1. Create new service
 2. Connect your GitHub repository
